@@ -36,3 +36,22 @@ var NamePlugin = Backbone.View.extend({
 	event2: function() {
 	}
 });
+
+Saiku.events.bind('session:new', function(session) {
+	function newWorkspace(args) {
+		if (typeof args.workspace.namePlugin === 'undefined') {
+			args.workspace.namePlugin = new NamePlugin({ workspace: args.workspace });
+		}
+	}
+
+	// Attach stats to existing tabs
+	for (var i = 0, len = Saiku.tabs._tabs.length; i < len; i++) {
+		var tab = Saiku.tabs._tabs[i];
+		newWorkspace({
+			workspace: tab.content
+		});
+	}
+
+	// Attach stats to future tabs
+	Saiku.session.bind("workspace:new", newWorkspace);
+});
