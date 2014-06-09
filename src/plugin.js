@@ -9,7 +9,7 @@ var NamePlugin = Backbone.View.extend({
 		// fairly useless this. methodNames are required.
 		// link: http://underscorejs.org/#bindAll
 
-		// Maintain "this" in callbacks
+		// Maintain `this` in callbacks
 		_.bindAll(this, 'event1', 'event2');
 
 		// Add button in workspace toolbar
@@ -28,7 +28,19 @@ var NamePlugin = Backbone.View.extend({
 		var li = $('<li class="seperator"></li>').append(button);
 		$(this.workspace.toolbar.el).find('ul').append(li);
 		// this.workspace.toolbar.namePlugin = this.show;
-	}
+	},
+
+	show: function() {
+		// pega alguma informação do workspace
+	},
+
+	render: function() {
+		// é chamado para renderizar alguma informação workspcace
+	},
+
+	process_data: function(args) {
+		// pega informações do result set
+	},
 
 	event1: function() {
 	},
@@ -37,8 +49,28 @@ var NamePlugin = Backbone.View.extend({
 	}
 });
 
+// carrega css
+function loadCSS(file) {
+	var headID    = document.querySelector('head');
+	var cssNode   = document.createElement('link');
+	cssNode.type  = 'text/css';
+	cssNode.rel   = 'stylesheet';
+	cssNode.href  = file;
+	cssNode.media = 'screen';
+	headID.appendChild(cssNode);
+}
+
+// carrega js
+function loadJS(file) {
+	var headID  = document.querySelector('head');
+	var jsNode  = document.createElement('script');
+	jsNode.type = 'text/javascript';
+	jsNode.src  = file;
+	headID.appendChild(jsNode);
+}
+
 Saiku.events.bind('session:new', function(session) {
-	function newWorkspace(args) {
+	function new_workspace(args) {
 		if (typeof args.workspace.namePlugin === 'undefined') {
 			args.workspace.namePlugin = new NamePlugin({ workspace: args.workspace });
 		}
@@ -47,11 +79,11 @@ Saiku.events.bind('session:new', function(session) {
 	// Attach stats to existing tabs
 	for (var i = 0, len = Saiku.tabs._tabs.length; i < len; i++) {
 		var tab = Saiku.tabs._tabs[i];
-		newWorkspace({
+		new_workspace({
 			workspace: tab.content
 		});
 	}
 
 	// Attach stats to future tabs
-	Saiku.session.bind("workspace:new", newWorkspace);
+	Saiku.session.bind('workspace:new', new_workspace);
 });
