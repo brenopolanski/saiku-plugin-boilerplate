@@ -19,7 +19,7 @@ var NamePlugin = Backbone.View.extend({
 	add_button: function() {
 		var button =
 			$('<a href="#namePlugin" class="namePlugin button disabled_toolbar i18n" title="Description namePlugin"></a>')
-			.css({ 'background-image': 'url("js/saiku/plugins/NamePlugin/namePlugin.png")',
+			.css({ 'background-image': 'url("js/saiku/plugins/NamePlugin/image/plugin.png")',
 				   'background-repeat': 'no-repeat',
 				   'background-position': '50% 50%',
 				   'background-size': '16px'
@@ -30,8 +30,20 @@ var NamePlugin = Backbone.View.extend({
 		// this.workspace.toolbar.namePlugin = this.show;
 	},
 
-	show: function() {
+	show: function(event) {
 		// pega alguma informação do workspace
+
+		// oculta table do workspace
+		$(this.workspace.el).find('.workspace_results table').toggle();
+		$(event.target).toggleClass('on');
+
+		// habilita/desabilita botão modo de tabela
+		if ($(event.target).hasClass('on')) {
+			$('.render_table').toggleClass('on');
+		}
+		else {
+			$('.render_table').toggleClass('on');
+		}
 	},
 
 	render: function() {
