@@ -14,12 +14,20 @@ var NamePlugin = Backbone.View.extend({
 
 		// Add button in workspace toolbar
 		this.add_button();
+
+		this.html = $('<h1>Hello World!!</h1>');
+
+		console.log(this);
+
+		// Append HTML to workspace
+		// $(this.workspace.el).find('.workspace_results').prepend($(this.el).hide()).prepend(this.html.hide());
+		$(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
 	},
 
 	add_button: function() {
 		var button =
 			$('<a href="#namePlugin" class="namePlugin button disabled_toolbar i18n" title="Description namePlugin"></a>')
-			.css({ 'background-image': 'url("js/saiku/plugins/NamePlugin/image/plugin.png")',
+			.css({ 'background-image': 'url("js/saiku/plugins/Helloworld/image/plugin.png")',
 				   'background-repeat': 'no-repeat',
 				   'background-position': '50% 50%',
 				   'background-size': '16px'
@@ -27,7 +35,7 @@ var NamePlugin = Backbone.View.extend({
 
 		var li = $('<li class="seperator"></li>').append(button);
 		$(this.workspace.toolbar.el).find('ul').append(li);
-		// this.workspace.toolbar.namePlugin = this.show;
+		this.workspace.toolbar.namePlugin = this.show;
 	},
 
 	show: function(event) {
@@ -40,6 +48,7 @@ var NamePlugin = Backbone.View.extend({
 		// habilita/desabilita botão modo de tabela
 		if ($(event.target).hasClass('on')) {
 			$('.render_table').toggleClass('on');
+			// this.render();
 		}
 		else {
 			$('.render_table').toggleClass('on');
