@@ -1,4 +1,8 @@
 var NamePlugin = Backbone.View.extend({
+	events: {
+		'click #rock': 'event1'
+	},
+
 	initialize: function(args) {
 		// Keep track of parent workspace
 		this.workspace = args.workspace;
@@ -10,16 +14,14 @@ var NamePlugin = Backbone.View.extend({
 		// link: http://underscorejs.org/#bindAll
 
 		// Maintain `this` in callbacks
-		_.bindAll(this, 'show', 'render', 'process_data', 'event1', 'event2');
+		_.bindAll(this, 'show', 'render', 'process_data', 
+				  'event1', 'event2');
 
 		// Add button in workspace toolbar
 		this.add_button();
-
-		// Create template HTML
-		this.html = $('<h1>Let\'s Go Rock and Roll :D</h1>');
-
-		// 
-		$(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
+		
+		// Add template HTML in workspace
+		this.template();
 	},
 
 	add_button: function() {
@@ -37,36 +39,46 @@ var NamePlugin = Backbone.View.extend({
 	},
 
 	show: function(event) {
-		// pega alguma informação do workspace
-
-		// oculta table do workspace
 		$(this.workspace.el).find('.workspace_results table').toggle();
 		$(this.html).toggle();
 		$(event.target).toggleClass('on');
 
-		// habilita/desabilita botão modo de tabela
+		// Enable/disabled button `render_table`
 		if ($(event.target).hasClass('on')) {
 			$('.render_table').toggleClass('on');
+			
+			// Render results in template HTML
 			this.render();
-
 		}
 		else {
 			$('.render_table').toggleClass('on');
 		}
 	},
 
+	template: function() {
+		// Create template HTML
+		this.html = $('<h1>Let\'s Go Rock and Roll :D</h1>'
+					  + '<p><a href="#" id="rock">teste</a></p>');
+
+		// Insert template in workspace results
+		$(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
+	},
+
 	render: function() {
-		// é chamado para renderizar alguma informação workspcace
+		// Render results
 	},
 
 	process_data: function(args) {
-		// pega informações do result set
+		// Process data from the result set
 	},
 
 	event1: function() {
+		window.alert('Uhuuuu o/');
+		// console.log('Uhuuuu o/');
 	},
 
 	event2: function() {
+		// Hi, you can add one event!! Let's Go :)
 	}
 });
 
