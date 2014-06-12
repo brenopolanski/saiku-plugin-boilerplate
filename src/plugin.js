@@ -10,18 +10,19 @@ var NamePlugin = Backbone.View.extend({
 		// link: http://underscorejs.org/#bindAll
 
 		// Maintain `this` in callbacks
-		_.bindAll(this, 'event1', 'event2');
+		_.bindAll(this, 'event1', 'event2', 'show');
 
 		// Add button in workspace toolbar
 		this.add_button();
 
 		this.html = $('<h1>Hello World!!</h1>');
 
-		console.log(this);
+		// console.log(this);
 
 		// Append HTML to workspace
-		// $(this.workspace.el).find('.workspace_results').prepend($(this.el).hide()).prepend(this.html.hide());
-		$(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
+		$(this.workspace.el).find('.workspace_results').prepend($(this.el).hide()).prepend(this.html.hide());
+		// $(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
+		// console.log(this.html);
 	},
 
 	add_button: function() {
@@ -43,12 +44,17 @@ var NamePlugin = Backbone.View.extend({
 
 		// oculta table do workspace
 		$(this.workspace.el).find('.workspace_results table').toggle();
+		$(this.el).toggle();
+		$(this.html).toggle();
 		$(event.target).toggleClass('on');
+
+		console.log(this.html);
 
 		// habilita/desabilita botão modo de tabela
 		if ($(event.target).hasClass('on')) {
 			$('.render_table').toggleClass('on');
-			// this.render();
+			this.render();
+
 		}
 		else {
 			$('.render_table').toggleClass('on');
@@ -57,6 +63,9 @@ var NamePlugin = Backbone.View.extend({
 
 	render: function() {
 		// é chamado para renderizar alguma informação workspcace
+		if (! $(this.workspace.toolbar.el).find('.namePlugin').hasClass('on')) {
+            return;
+        }
 	},
 
 	process_data: function(args) {
