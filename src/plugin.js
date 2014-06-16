@@ -1,8 +1,4 @@
 var NamePlugin = Backbone.View.extend({
-	events: {
-		'click #rock': 'event1'
-	},
-
 	initialize: function(args) {
 		// Keep track of parent workspace
 		this.workspace = args.workspace;
@@ -14,20 +10,23 @@ var NamePlugin = Backbone.View.extend({
 		// link: http://underscorejs.org/#bindAll
 
 		// Maintain `this` in callbacks
-		_.bindAll(this, 'show', 'render', 'process_data', 
-				  'event1', 'event2');
+		_.bindAll(this, 'add_button', 'show', 'template', 'render', 'process_data', 
+                  'event1', 'event2');
 
 		// Add button in workspace toolbar
 		this.add_button();
 		
 		// Add template HTML in workspace
 		this.template();
+
+		// Listen to adjust event
+		this.workspace.bind('workspace:adjust', this.render);
 	},
 
 	add_button: function() {
 		var button =
 			$('<a href="#namePlugin" class="namePlugin button disabled_toolbar i18n" title="Description namePlugin"></a>')
-			.css({ 'background-image': 'url("js/saiku/plugins/Helloworld/image/plugin.png")',
+			.css({ 'background-image': 'url("js/saiku/plugins/NamePlugin/image/plugin.png")',
 				   'background-repeat': 'no-repeat',
 				   'background-position': '50% 50%',
 				   'background-size': '16px'
@@ -57,8 +56,7 @@ var NamePlugin = Backbone.View.extend({
 
 	template: function() {
 		// Create template HTML
-		this.html = $('<h1>Let\'s Go Rock and Roll :D</h1>'
-					  + '<p><a href="#" id="rock">teste</a></p>');
+		this.html = $('<h1>Let\'s Go Rock and Roll :D</h1>');
 
 		// Insert template in workspace results
 		$(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
@@ -73,8 +71,7 @@ var NamePlugin = Backbone.View.extend({
 	},
 
 	event1: function() {
-		window.alert('Uhuuuu o/');
-		// console.log('Uhuuuu o/');
+		// Hi, you can add one event!! Let's Go :)
 	},
 
 	event2: function() {
@@ -82,7 +79,10 @@ var NamePlugin = Backbone.View.extend({
 	}
 });
 
-// carrega css
+ /**
+  * Load file CSS
+  * @param {String} file - Path of file css.
+  */
 function loadCSS(file) {
 	var headID    = document.querySelector('head');
 	var cssNode   = document.createElement('link');
@@ -93,7 +93,10 @@ function loadCSS(file) {
 	headID.appendChild(cssNode);
 }
 
-// carrega js
+ /**
+  * Load file JavaScript
+  * @param {String} file - Path of file js.
+  */
 function loadJS(file) {
 	var headID  = document.querySelector('head');
 	var jsNode  = document.createElement('script');
@@ -102,7 +105,15 @@ function loadJS(file) {
 	headID.appendChild(jsNode);
 }
 
+ /**
+  * Start Plugin
+  */
 Saiku.events.bind('session:new', function(session) {
+
+	// loadCSS('js/saiku/plugins/NamePlugin/css/plugin.css');	
+
+	// loadJS('js/saiku/plugins/NamePlugin/js/lib.js');
+
 	function new_workspace(args) {
 		if (typeof args.workspace.namePlugin === 'undefined') {
 			args.workspace.namePlugin = new NamePlugin({ workspace: args.workspace });
