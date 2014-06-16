@@ -1,0 +1,23 @@
+{
+  "name": "saiku-plugin-boilerplate",
+  "version": "0.1.0",
+  "description": "A jump-start for Saiku UI plugins development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brenopolanski/saiku-plugin-boilerplate"
+  },
+  "keywords": [
+    "saiku",
+    "boilerplate",
+    "plugins"
+  ],
+  "author": "Breno Polanski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brenopolanski/saiku-plugin-boilerplate/issues"
+  }
+}
