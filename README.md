@@ -8,6 +8,10 @@
 
 This project won't seek to provide a perfect solution to every possible pattern, but will attempt to cover a simple template for beginners and above.
 
+## Contributing
+
+Check [CONTRIBUTING.md](https://github.com/brenopolanski/saiku-plugin-boilerplate/blob/master/CONTRIBUTING.md) for more information.
+
 ## History
 
 For detailed changelog, check [Releases](https://github.com/brenopolanski/saiku-plugin-boilerplate/releases).
