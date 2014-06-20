@@ -19,5 +19,10 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/brenopolanski/saiku-plugin-boilerplate/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-concat": "~0.4.0"
   }
 }
