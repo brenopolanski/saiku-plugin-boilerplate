@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		// Banner definitions
 		meta: {
 			banner: '/**\n' +
-			        ' * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n' +
+			        ' * <%= pkg.title || pkg.name %> - v<%= pkg.version %>\n' +
 			        ' * <%= pkg.description %>\n' +
 			        ' *\n' +
 			        ' * Made by <%= pkg.author.name %>\n' +
@@ -32,12 +32,23 @@ module.exports = function(grunt) {
 			options: {
 				jshintrc: '.jshintrc'
 			}
+		},
+
+		// Copy definitions
+		copy: {
+			main: {
+				src: 'src/image/plugin.png',
+				dest: 'dist/image/plugin.png'
+			}
 		}
 	});
 
-	grunt.loadNpmTasks("grunt-contrib-concat");
-	grunt.loadNpmTasks("grunt-contrib-jshint");
+	// These plugins provide necessary tasks
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
-	grunt.registerTask('default', ['jshint', 'concat']);
+	// By default, lint and run all tests
+	grunt.registerTask('default', ['jshint', 'concat', 'copy']);
 	grunt.registerTask('travis', ['jshint']);
 };

@@ -1,3 +1,10 @@
+/**
+ * Saiku UI Plugin Boilerplate - v0.1.0
+ * A jump-start for Saiku UI plugins development.
+ *
+ * Made by Breno Polanski
+ * Under MIT License
+ */
 var NamePlugin = Backbone.View.extend({
 	initialize: function(args) {
 		// Keep track of parent workspace
