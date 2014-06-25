@@ -3,6 +3,10 @@ var NamePlugin = Backbone.View.extend({
 		// Keep track of parent workspace
 		this.workspace = args.workspace;
 
+		// Create a ID for use as the CSS selector
+        this.id = 'namePlugin';
+        this.$el.attr({ id: this.id });
+
 		// Binds a number of methods on the object, specified by methodNames, to be run in
 		// the context of that object whenever they are invoked. Very handy for binding functions
 		// that are going to be used as event handlers, which would otherwise be invoked with a
@@ -33,13 +37,13 @@ var NamePlugin = Backbone.View.extend({
 				});
 
 		var li = $('<li class="seperator"></li>').append(button);
-		$(this.workspace.toolbar.el).find('ul').append(li);
+		this.workspace.toolbar.$el.find('ul').append(li);
 		this.workspace.toolbar.namePlugin = this.show;
 	},
 
 	show: function(event) {
-		$(this.workspace.el).find('.workspace_results table').toggle();
-		$(this.html).toggle();
+		this.workspace.$el.find('.workspace_results table').toggle();
+		this.$el.toggle();
 		$(event.target).toggleClass('on');
 
 		// Enable/disabled button `render_table`
@@ -58,8 +62,11 @@ var NamePlugin = Backbone.View.extend({
 		// Create template HTML
 		this.html = $('<h1>Let\'s Go Rock and Roll :D</h1>');
 
+		// Add template in this.$el
+		this.$el.html(this.html);
+
 		// Insert template in workspace results
-		$(this.workspace.el).find('.workspace_results').prepend(this.html.hide());
+		$(this.workspace.$el).find('.workspace_results').prepend(this.$el.hide());
 	},
 
 	render: function() {
@@ -107,12 +114,10 @@ function loadJS(file) {
 
  /**
   * Start Plugin
-  * TODO - Test session parameter
   */
-Saiku.events.bind('session:new', function(session) {
+Saiku.events.bind('session:new', function() {
 
 	// loadCSS('js/saiku/plugins/NamePlugin/css/plugin.css');	
-
 	// loadJS('js/saiku/plugins/NamePlugin/js/lib.js');
 
 	function new_workspace(args) {
@@ -121,7 +126,7 @@ Saiku.events.bind('session:new', function(session) {
 		}
 	}
 
-	// Attach stats to existing tabs
+	// Add new tab content
 	for (var i = 0, len = Saiku.tabs._tabs.length; i < len; i += 1) {
 		var tab = Saiku.tabs._tabs[i];
 		new_workspace({
@@ -129,6 +134,6 @@ Saiku.events.bind('session:new', function(session) {
 		});
 	}
 
-	// Attach stats to future tabs
+	// New workspace
 	Saiku.session.bind('workspace:new', new_workspace);
 });

@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		concat: {
 			dist: {
 				src: ['src/plugin.js'],
-				dest: 'dist/plugin.js'
+				dest: 'NamePlugin/plugin.js'
 			},
 			options: {
 				banner: '<%= meta.banner %>'
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 		copy: {
 			main: {
 				src: 'src/image/plugin.png',
-				dest: 'dist/image/plugin.png'
+				dest: 'NamePlugin/image/plugin.png'
 			}
 		}
 	});
