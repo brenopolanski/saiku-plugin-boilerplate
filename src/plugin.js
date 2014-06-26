@@ -5,6 +5,13 @@
  * Made by Breno Polanski
  * Under MIT License
  */
+/**
+ * Saiku UI Plugin Boilerplate - v0.1.0
+ * A jump-start for Saiku UI plugins development.
+ *
+ * Made by Breno Polanski
+ * Under MIT License
+ */
 var NamePlugin = Backbone.View.extend({
 	initialize: function(args) {
 		// Keep track of parent workspace
@@ -75,6 +82,8 @@ var NamePlugin = Backbone.View.extend({
 		// Add template in this.$el
 		this.$el.html(this.html);
 
+		console.log(this.$el);
+
 		// Insert template in workspace results
 		this.workspace.$el.find('.workspace_results').prepend(this.$el.hide());
 	},
@@ -87,7 +96,17 @@ var NamePlugin = Backbone.View.extend({
         return _.delay(this.process_data, 1000, args);
     },
 
+    validator_type: function(value)	{
+    	if (typeof(value) !== 'number' && isNaN(value.replace(/[^a-zA-Z 0-9.]+/g,''))) {
+    		return 'String';
+    	}
+    	else {
+    		return 'Numeric';
+    	}
+    },
+
 	process_data: function(args) {
+		console.log(args);
 		// Process data from the result set
 
 		this.data = {
@@ -112,12 +131,10 @@ var NamePlugin = Backbone.View.extend({
 
         				this.data.metadata.push({
         					colIndex: column,
-        					// TODO - create function
-        					colType: typeof(args.data.cellset[row + 1][column].value) !== 'number' && 
-        						isNaN(args.data.cellset[row + 1][column].value
-                                .replace(/[^a-zA-Z 0-9.]+/g,'')) ? 'String' : 'Numeric',
+        					colType: this.validator_type(args.data.cellset[row + 1][column].value),
         					colName: args.data.cellset[row][column].value
         				});
+        				console.log(this.data.metadata)
         			}
         		}
         		else if (args.data.cellset[row][0].value !== 'null' && args.data.cellset[row][0].value !== '') {
