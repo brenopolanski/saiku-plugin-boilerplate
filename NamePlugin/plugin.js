@@ -5,6 +5,13 @@
  * Made by Breno Polanski
  * Under MIT License
  */
+/**
+ * Saiku UI Plugin Boilerplate - v0.1.0
+ * A jump-start for Saiku UI plugins development.
+ *
+ * Made by Breno Polanski
+ * Under MIT License
+ */
 var NamePlugin = Backbone.View.extend({
 	initialize: function(args) {
 		// Keep track of parent workspace
@@ -21,14 +28,17 @@ var NamePlugin = Backbone.View.extend({
 		// link: http://underscorejs.org/#bindAll
 
 		// Maintain `this` in callbacks
-		_.bindAll(this, 'add_button', 'show', 'template', 'render', 'process_data', 
-                  'event1', 'event2');
+		_.bindAll(this, 'add_button', 'show', 'template', 'render', 'receive_data', 
+			      'process_data', 'event1', 'event2');
 
 		// Add button in workspace toolbar
 		this.add_button();
 		
 		// Add template HTML in workspace
 		this.template();
+
+		// 
+		this.workspace.bind('query:result', this.receive_data);
 
 		// Listen to adjust event
 		this.workspace.bind('workspace:adjust', this.render);
@@ -73,15 +83,73 @@ var NamePlugin = Backbone.View.extend({
 		this.$el.html(this.html);
 
 		// Insert template in workspace results
-		$(this.workspace.$el).find('.workspace_results').prepend(this.$el.hide());
+		this.workspace.$el.find('.workspace_results').prepend(this.$el.hide());
 	},
 
 	render: function() {
 		// Render results
 	},
 
+    receive_data: function(args) {
+        return _.delay(this.process_data, 1000, args);
+    },
+
 	process_data: function(args) {
 		// Process data from the result set
+
+		this.data = {
+        	metadata: [],
+        	resultset: [],
+        	width: 0,
+        	height: 0
+        };
+
+        if (args.data.cellset && args.data.cellset.length > 0) {
+        	var ROWS = args.data.cellset.length,
+        		lowestLevel = 0;
+        	for (var row = 0; row < ROWS; row += 1) {
+        		var COLUMNS = args.data.cellset[row].length;
+        		if (args.data.cellset[row][0].type === 'ROW_HEADER_HEADER') {
+        			this.data.metadata = [];
+        			for (var column = 0; column < COLUMNS; column += 1) {
+        				if (args.data.cellset[row][column].type === 'ROW_HEADER_HEADER') {
+        					this.data.metadata.shift();
+        					lowestLevel = column;
+        				}
+
+        				this.data.metadata.push({
+        					colIndex: column,
+        					// TODO - create function
+        					colType: typeof(args.data.cellset[row + 1][column].value) !== 'number' && 
+        						isNaN(args.data.cellset[row + 1][column].value
+                                .replace(/[^a-zA-Z 0-9.]+/g,'')) ? 'String' : 'Numeric',
+        					colName: args.data.cellset[row][column].value
+        				});
+        			}
+        		}
+        		else if (args.data.cellset[row][0].value !== 'null' && args.data.cellset[row][0].value !== '') {
+        			var record = [];
+        			this.data.width = COLUMNS;
+        			for (var column = lowestLevel; column < COLUMNS; column += 1) {
+        				var value = args.data.cellset[row][column].value;
+        				if (args.data.cellset[row][column].properties.raw && args.data.cellset[row][column].properties.raw !== 'null' && column > 0) {
+        					value = parseFloat(args.data.cellset[row][column].properties.raw);
+        				}
+        				else if (typeof(args.data.cellset[row][column].value) !== 'number' &&
+                        	parseFloat(args.data.cellset[row][column].value.replace(/[^a-zA-Z 0-9.]+/g,'')) && column > 0) {
+        					value = parseFloat(args.data.cellset[row][column].value.replace(/[^a-zA-Z 0-9.]+/g,''));
+        				}
+        				record.push(value);
+        			}
+        			this.data.resultset.push(record);
+        		}
+        	}
+        	this.data.height = this.data.resultset.length;
+        	// this.render();
+        }
+        else {
+        	this.$el.text('No results');
+        }
 	},
 
 	event1: function() {
