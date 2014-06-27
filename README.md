@@ -35,7 +35,7 @@ For detailed changelog, check [Releases](https://github.com/brenopolanski/saiku-
 I gratefully acknowledge the following open source projects:
 
 * [Saiku UI](https://github.com/OSBI/saiku-ui) - A user interface for the Saiku analytical tool (Apache license version 2).
-* [Saiku Chart Plus](https://github.com/ippa/jaws) - Create other types of charts and maps based on Saiku Project, Highcharts and Google Maps. (Apache license version 2).
+* [Saiku Chart Plus](Saiku Chart Plus) - Create other types of charts and maps based on Saiku Project, Highcharts and Google Maps. (Apache license version 2).
 
 ## License
 
