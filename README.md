@@ -10,9 +10,26 @@ This project won't seek to provide a perfect solution to every possible pattern,
 
 ## Usage
 
-## Structure
+1. Include **NamePlugin** folder in:
 
-## Guides
+	
+  ```
+  ├── saiku-ui/
+  │   └── js/
+  │       └── saiku/
+  │           └── plugins/
+  │               └── NamePlugin/
+  │                   └── image/
+  │                       └── plugin.png
+  │                   └── plugin.js
+  ```
+
+2. Edit the file saiku-ui/index.html, insert the code below:
+
+	```html
+	<script type="text/javascript" src="js/saiku/plugins/NamePlugin/plugin.js" defer></script>
+	```
+	> look for ***Saiku plugins*** comment in index.html.
 
 ## Team
 
