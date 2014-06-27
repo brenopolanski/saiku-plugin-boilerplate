@@ -1,17 +1,3 @@
-/**
- * Saiku UI Plugin Boilerplate - v0.1.0
- * A jump-start for Saiku UI plugins development.
- *
- * Made by Breno Polanski
- * Under MIT License
- */
-/**
- * Saiku UI Plugin Boilerplate - v0.1.0
- * A jump-start for Saiku UI plugins development.
- *
- * Made by Breno Polanski
- * Under MIT License
- */
 var NamePlugin = Backbone.View.extend({
 	initialize: function(args) {
 		// Keep track of parent workspace
@@ -20,12 +6,6 @@ var NamePlugin = Backbone.View.extend({
 		// Create a ID for use as the CSS selector
         this.id = 'namePlugin';
         this.$el.attr({ id: this.id });
-
-		// Binds a number of methods on the object, specified by methodNames, to be run in
-		// the context of that object whenever they are invoked. Very handy for binding functions
-		// that are going to be used as event handlers, which would otherwise be invoked with a
-		// fairly useless this. methodNames are required.
-		// link: http://underscorejs.org/#bindAll
 
 		// Maintain `this` in callbacks
 		_.bindAll(this, 'add_button', 'show', 'template', 'render', 'receive_data', 
@@ -37,7 +17,7 @@ var NamePlugin = Backbone.View.extend({
 		// Add template HTML in workspace
 		this.template();
 
-		// 
+		// Listen to result event
 		this.workspace.bind('query:result', this.receive_data);
 
 		// Listen to adjust event
@@ -82,21 +62,19 @@ var NamePlugin = Backbone.View.extend({
 		// Add template in this.$el
 		this.$el.html(this.html);
 
-		console.log(this.$el);
-
 		// Insert template in workspace results
 		this.workspace.$el.find('.workspace_results').prepend(this.$el.hide());
 	},
 
 	render: function() {
-		// Render results
+		// Render results...
 	},
 
     receive_data: function(args) {
         return _.delay(this.process_data, 1000, args);
     },
 
-    validator_type: function(value)	{
+    type_validation: function(value)	{
     	if (typeof(value) !== 'number' && isNaN(value.replace(/[^a-zA-Z 0-9.]+/g,''))) {
     		return 'String';
     	}
@@ -106,8 +84,8 @@ var NamePlugin = Backbone.View.extend({
     },
 
 	process_data: function(args) {
-		console.log(args);
-		// Process data from the result set
+		var ROWS = args.data.cellset.length,
+			COLUMNS = args.data.cellset[0].length;
 
 		this.data = {
         	metadata: [],
@@ -117,13 +95,13 @@ var NamePlugin = Backbone.View.extend({
         };
 
         if (args.data.cellset && args.data.cellset.length > 0) {
-        	var ROWS = args.data.cellset.length,
+        	var row,
+        		column,
         		lowestLevel = 0;
-        	for (var row = 0; row < ROWS; row += 1) {
-        		var COLUMNS = args.data.cellset[row].length;
+        	for (row = 0; row < ROWS; row += 1) {
         		if (args.data.cellset[row][0].type === 'ROW_HEADER_HEADER') {
         			this.data.metadata = [];
-        			for (var column = 0; column < COLUMNS; column += 1) {
+        			for (column = 0; column < COLUMNS; column += 1) {
         				if (args.data.cellset[row][column].type === 'ROW_HEADER_HEADER') {
         					this.data.metadata.shift();
         					lowestLevel = column;
@@ -131,22 +109,28 @@ var NamePlugin = Backbone.View.extend({
 
         				this.data.metadata.push({
         					colIndex: column,
-        					colType: this.validator_type(args.data.cellset[row + 1][column].value),
+        					colType: this.type_validation(args.data.cellset[row + 1][column].value),
         					colName: args.data.cellset[row][column].value
         				});
-        				console.log(this.data.metadata)
         			}
         		}
         		else if (args.data.cellset[row][0].value !== 'null' && args.data.cellset[row][0].value !== '') {
         			var record = [];
         			this.data.width = COLUMNS;
-        			for (var column = lowestLevel; column < COLUMNS; column += 1) {
+        			for (column = lowestLevel; column < COLUMNS; column += 1) {
         				var value = args.data.cellset[row][column].value;
-        				if (args.data.cellset[row][column].properties.raw && args.data.cellset[row][column].properties.raw !== 'null' && column > 0) {
+
+        				// check if the resultset contains the raw value, 
+        				// if not try to parse the given value
+
+        				if (args.data.cellset[row][column].properties.raw && 
+        					args.data.cellset[row][column].properties.raw !== 'null' && column > 0) {
+
         					value = parseFloat(args.data.cellset[row][column].properties.raw);
         				}
         				else if (typeof(args.data.cellset[row][column].value) !== 'number' &&
                         	parseFloat(args.data.cellset[row][column].value.replace(/[^a-zA-Z 0-9.]+/g,'')) && column > 0) {
+
         					value = parseFloat(args.data.cellset[row][column].value.replace(/[^a-zA-Z 0-9.]+/g,''));
         				}
         				record.push(value);
@@ -155,7 +139,9 @@ var NamePlugin = Backbone.View.extend({
         		}
         	}
         	this.data.height = this.data.resultset.length;
-        	// this.render();
+
+        	// Render results
+        	this.render();
         }
         else {
         	this.$el.text('No results');
