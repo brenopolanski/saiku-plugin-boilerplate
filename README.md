@@ -16,6 +16,12 @@ This project won't seek to provide a perfect solution to every possible pattern,
 
 ## Team
 
+Saiku UI Plugin Boilerplate was made with love by these guys.
+
+[![Breno Polanski](https://avatars3.githubusercontent.com/u/1894191?s=70)](https://github.com/brenopolanski) | [![Caitano Junior](https://avatars0.githubusercontent.com/u/7557360?s=70)](https://github.com/caitanojunior) | [![Singrid Palmeira]()](https://github.com/Singrid)
+--- | --- | --- | --- | --- | --- | ---
+[Breno Polanski](https://github.com/brenopolanski) | [Caitano Junior](https://github.com/caitanojunior) | [Singrid Palmeira](https://github.com/Singrid)
+
 ## Contributing
 
 Check [CONTRIBUTING.md](https://github.com/brenopolanski/saiku-plugin-boilerplate/blob/master/CONTRIBUTING.md) for more information.
@@ -23,6 +29,13 @@ Check [CONTRIBUTING.md](https://github.com/brenopolanski/saiku-plugin-boilerplat
 ## History
 
 For detailed changelog, check [Releases](https://github.com/brenopolanski/saiku-plugin-boilerplate/releases).
+
+## Credits
+
+I gratefully acknowledge the following open source projects:
+
+* [Saiku UI](https://github.com/OSBI/saiku-ui) - A user interface for the Saiku analytical tool (Apache license version 2).
+* [Saiku Chart Plus](https://github.com/ippa/jaws) - Create other types of charts and maps based on Saiku Project, Highcharts and Google Maps. (Apache license version 2).
 
 ## License
 
