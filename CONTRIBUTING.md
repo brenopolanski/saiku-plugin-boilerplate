@@ -9,4 +9,4 @@
 
 #### Have you created a plugin from our boilerplate?
 
-[Let us know!]() It’s interesting to see what features others have come up with.
+[Let us know!](https://github.com/brenopolanski/saiku-plugin-boilerplate/wiki/Sites) It’s interesting to see what features others have come up with.
