@@ -37,7 +37,6 @@ var MaskResultSet = Backbone.View.extend({
   * Start Plugin
   */
 Saiku.events.bind('session:new', function() {
-
 	function new_workspace(args) {
 		if (typeof args.workspace.maskResultSet === 'undefined') {
 			args.workspace.maskResultSet = new MaskResultSet({ workspace: args.workspace });
