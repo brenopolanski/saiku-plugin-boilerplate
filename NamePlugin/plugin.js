@@ -1,5 +1,5 @@
 /**
- * Saiku UI Plugin Boilerplate - v0.1.0
+ * Saiku UI Plugin Boilerplate - v0.2.0
  * A jump-start for Saiku UI plugins development.
  *
  * Made by Breno Polanski
@@ -13,6 +13,9 @@ var NamePlugin = Backbone.View.extend({
 		// Create a ID for use as the CSS selector
         this.id = 'namePlugin';
         this.$el.attr({ id: this.id });
+
+		// Base URL
+        this.BASE_URL = 'js/saiku/plugins/NamePlugin/';
 
 		// Maintain `this` in callbacks
 		_.bindAll(this, 'add_button', 'show', 'template', 'render', 'receive_data', 
@@ -34,7 +37,7 @@ var NamePlugin = Backbone.View.extend({
 	add_button: function() {
 		var button =
 			$('<a href="#namePlugin" class="namePlugin button disabled_toolbar i18n" title="Description namePlugin"></a>')
-			.css({ 'background-image': 'url("js/saiku/plugins/NamePlugin/image/plugin.png")',
+			.css({ 'background-image': 'url("' + this.BASE_URL + 'image/plugin.png")',
 				   'background-repeat': 'no-repeat',
 				   'background-position': '50% 50%',
 				   'background-size': '16px'
@@ -64,7 +67,7 @@ var NamePlugin = Backbone.View.extend({
 
 	template: function() {
 		// Create template HTML
-		this.html = $('<h1>Let\'s Go Rock and Roll :D</h1>');
+		this.html = _.template('<h1>Let\'s Go Rock and Roll :D</h1>');
 
 		// Add template in this.$el
 		this.$el.html(this.html);
@@ -91,45 +94,55 @@ var NamePlugin = Backbone.View.extend({
     },
 
 	process_data: function(args) {
-		var ROWS = args.data.cellset.length,
-			COLUMNS = args.data.cellset[0].length;
+		if (args.data.cellset && args.data.cellset.length > 0) {
+			var ROWS = args.data.cellset.length,
+				COLUMNS = args.data.cellset[0].length;
 
-		this.data = {
-        	metadata: [],
-        	resultset: [],
-        	width: 0,
-        	height: 0
-        };
+			this.data = {
+	        	metadata: [],
+	        	resultset: [],
+	        	width: 0,
+	        	height: 0
+	        };
 
-        if (args.data.cellset && args.data.cellset.length > 0) {
         	var row,
-        		column,
-        		lowestLevel = 0;
-        	for (row = 0; row < ROWS; row += 1) {
-        		if (args.data.cellset[row][0].type === 'ROW_HEADER_HEADER') {
-        			this.data.metadata = [];
-        			for (column = 0; column < COLUMNS; column += 1) {
-        				if (args.data.cellset[row][column].type === 'ROW_HEADER_HEADER') {
-        					this.data.metadata.shift();
-        					lowestLevel = column;
-        				}
+        		column;
 
-        				this.data.metadata.push({
-        					colIndex: column,
-        					colType: this.type_validation(args.data.cellset[row + 1][column].value),
-        					colName: args.data.cellset[row][column].value
-        				});
-        			}
-        		}
-        		else if (args.data.cellset[row][0].value !== 'null' && args.data.cellset[row][0].value !== '') {
-        			var record = [];
-        			this.data.width = COLUMNS;
-        			for (column = lowestLevel; column < COLUMNS; column += 1) {
+        	for (row = 0; row < ROWS; row += 1) {
+        		for (column = 0; column < COLUMNS; column += 1) {
+	        		if (args.data.cellset[row][column].type === 'ROW_HEADER_HEADER') {
+	    				this.data.metadata.push({
+	    					colIndex: column,
+	    					colName: args.data.cellset[row][column].value,
+	    					colType: this.type_validation(args.data.cellset[row + 1][column].value),
+	    					properties: {
+        						dimension: args.data.cellset[row][column].properties.dimension,
+        						hierarchy: args.data.cellset[row][column].properties.hierarchy,
+        						level: args.data.cellset[row][column].properties.level,
+    							uniquename: args.data.cellset[row][column].properties.uniquename
+        					}
+	    				});
+	        		}
+	        		else if (args.data.cellset[row][column].type === 'COLUMN_HEADER') {
+	    				this.data.metadata.push({
+	    					colIndex: column,
+	    					colName: args.data.cellset[row][column].value,
+	    					colType: this.type_validation(args.data.cellset[row + 1][column].value),
+	    					properties: {
+        						dimension: args.data.cellset[row][column].properties.dimension,
+        						hierarchy: args.data.cellset[row][column].properties.hierarchy,
+        						level: args.data.cellset[row][column].properties.level,
+    							uniquename: args.data.cellset[row][column].properties.uniquename
+        					}
+	    				});
+	        		}
+	        		else if ((args.data.cellset[row][column].type === 'ROW_HEADER') ||
+	        				 (args.data.cellset[row][column].type === 'DATA_CELL')) {
+
         				var value = args.data.cellset[row][column].value;
 
         				// check if the resultset contains the raw value, 
         				// if not try to parse the given value
-
         				if (args.data.cellset[row][column].properties.raw && 
         					args.data.cellset[row][column].properties.raw !== 'null' && column > 0) {
 
@@ -140,12 +153,12 @@ var NamePlugin = Backbone.View.extend({
 
         					value = parseFloat(args.data.cellset[row][column].value.replace(/[^a-zA-Z 0-9.]+/g,''));
         				}
-        				record.push(value);
-        			}
-        			this.data.resultset.push(record);
+        				this.data.resultset.push(value);
+	        		}
         		}
         	}
-        	this.data.height = this.data.resultset.length;
+        	this.data.height = ROWS;
+        	this.data.width = COLUMNS;
 
         	// Render results
         	this.render();
