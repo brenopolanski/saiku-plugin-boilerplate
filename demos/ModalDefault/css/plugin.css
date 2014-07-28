@@ -1,0 +1,7 @@
+.dialog_demoModal .dialog_icon {
+	margin-top: 8px;
+	margin-left: 8px;
+    background: url(../image/toolbar_plugin.png) no-repeat;
+    width: 40px;
+    height: 100px;
+}

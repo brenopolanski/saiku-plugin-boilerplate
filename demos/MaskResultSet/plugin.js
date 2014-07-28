@@ -1,5 +1,5 @@
 /**
- * Saiku UI Plugin Boilerplate - v0.1.0
+ * Saiku UI Plugin Boilerplate - v0.2.0
  * A jump-start for Saiku UI plugins development.
  *
  * Made by Breno Polanski
