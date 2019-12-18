@@ -30,15 +30,7 @@ This project won't seek to provide a perfect solution to every possible pattern,
 	<script type="text/javascript" src="js/saiku/plugins/NamePlugin/plugin.js" defer></script>
 	```
 	> look for ***Saiku plugins*** comment in index.html.
-
-## Team
-
-Saiku UI Plugin Boilerplate was made with love by these guys.
-
-[![Breno Polanski](https://avatars3.githubusercontent.com/u/1894191?s=70)](https://github.com/brenopolanski) | [![Caitano Junior](https://avatars0.githubusercontent.com/u/7557360?s=70)](https://github.com/caitanojunior) | [![Singrid Palmeira](https://avatars0.githubusercontent.com/u/7749234?s=70)](https://github.com/Singrid)
---- | --- | --- | --- | --- | --- | ---
-[Breno Polanski](https://github.com/brenopolanski) | [Caitano Junior](https://github.com/caitanojunior) | [Singrid Palmeira](https://github.com/Singrid)
-
+	
 ## Contributing
 
 Check [CONTRIBUTING.md](https://github.com/brenopolanski/saiku-plugin-boilerplate/blob/master/CONTRIBUTING.md) for more information.
@@ -56,4 +48,4 @@ I gratefully acknowledge the following open source projects:
 
 ## License
 
-[MIT License](http://brenopolanski.mit-license.org/) © Breno Polanski
+[MIT License](https://brenopolanski.mit-license.org/) © Breno Polanski
